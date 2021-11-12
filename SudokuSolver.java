@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.Arrays;
 
 public class SudokuSolver {
 	
@@ -28,9 +27,13 @@ public class SudokuSolver {
 		
 		// if the user choose 'd' then the board will point to the same location in memory as the default_board
 		if(option=='d') {
-			board=default_board; 
+			for(int i=0;i<GRID_SIZE;i++) // I chose to do a deep copy here instead of a shallow copy
+				for(int j=0;j<GRID_SIZE;j++) 
+					board[i][j]=default_board[i][j];
+			
 			printBoard(board);
 			System.out.println("The board was solved succesfully!");
+			solveBoard(board);
 			printBoard(board); // we call the funtion in order to print the board
 		}
 		// if the user choose 'i' then he has to introduce his own numbers for the board
@@ -52,11 +55,11 @@ public class SudokuSolver {
 
 	private static void printBoard(int[][] board) {
 		for(int row=0;row<GRID_SIZE;row++) {
-			if(row % 3 == 0 && row != 0) // for every third row
-				System.out.println("------------");
+			if(row % 3 == 0 && row != 0) 
+				System.out.println("------------"); // prints this for every third row
 			for(int column=0;column<GRID_SIZE;column++) {
-				if(column % 3 == 0 && column != 0) // for every third column
-					System.out.print("|");
+				if(column % 3 == 0 && column != 0) 
+					System.out.print("|"); // prints this for every third column
 				System.out.print(board[row][column]);
 			}
 			System.out.println();
@@ -64,36 +67,36 @@ public class SudokuSolver {
 
 	}
 
-	private static boolean isNumInRow(int[][] board, int number, int row) {
+	private static boolean isNumInRow(int[][] board, int number, int row) { // it checks if the number is present in the row
 	
 		for(int i=0;i<GRID_SIZE;i++) 
 			if(board[row][i]==number) return true;
 		return false;
 	}
 	
-	private static boolean isNumInCol(int[][] board, int number, int column) {
+	private static boolean isNumInCol(int[][] board, int number, int column) { // it checks if the number is present in the column
 
 		for(int i=0;i<GRID_SIZE;i++) 
 			if(board[i][column]==number) return true;
 		return false;
 	}
 	
-	private static boolean isNumInBox(int[][] board, int number, int row, int column) {
+	private static boolean isNumInBox(int[][] board, int number, int row, int column) { // it checks if the number is present in a 3 by 3 box
 		int localBoxRow= row - row % 3;
 		int localBoxCol= column - column % 3;
 		
 		for(int i= localBoxRow; i<localBoxRow + 3; i++) 
 			for(int j= localBoxCol; j<localBoxCol + 3; j++) 
-				if(board[i][j]== number) return true;
+				if(board[i][j]== number) return true; // check every 3 by 3 box
 		return false;
 	}
 	
-	private static boolean isValidPlacement(int[][] board, int number, int row, int column) {
+	private static boolean isValidPlacement(int[][] board, int number, int row, int column) { // this is a method which checks if there is no number in the row, column and 3 by 3 box
 		return !isNumInRow(board,number,row)&&!isNumInCol(board,number,column)&&
 			   !isNumInBox(board,number,row,column);
 	}
 	
-	private static boolean solveBoard(int[][] board) {
+	private static boolean solveBoard(int[][] board) { // this is the method that actually solves the board
 		
 		for(int row=0; row< GRID_SIZE;row++) 
 			for(int column=0; column<GRID_SIZE;column++) 
@@ -102,12 +105,12 @@ public class SudokuSolver {
 						
 						if(isValidPlacement(board,tryNum,row,column)) {
 							board[row][column]= tryNum;
-							if(solveBoard(board)) return true;
-							else board[row][column]= 0;
+							if(solveBoard(board)) return true; // this is a recursive call
+							else board[row][column]= 0; // is backtracking if there is no solution, so it checks all the possibilities
 						}
 						
 					}
-					return false;
+					return false; // returns false if it finds no solution
 				}
 		return true;
 	}
