@@ -7,6 +7,7 @@ public class SudokuSolver {
 	
 	public static void main(String[]args) {
 		
+		//created a default board for a quick test
 		int[][] default_board= {
 			  { 8, 0, 0, 0, 0, 0, 0, 0, 0 },
 			  { 0, 0, 3, 6, 0, 0, 0, 0, 0 },
@@ -25,34 +26,36 @@ public class SudokuSolver {
 				+ "Type \"i\" to introduce your own");
 		char option= input.next().charAt(0);
 		
+		// if the user choose 'd' then the board will point to the same location in memory as the default_board
 		if(option=='d') {
-			board=default_board;
+			board=default_board; 
 			printBoard(board);
 			System.out.println("The board was solved succesfully!");
-			printBoard(board);
+			printBoard(board); // we call the funtion in order to print the board
 		}
+		// if the user choose 'i' then he has to introduce his own numbers for the board
 		else if(option=='i') {
 			int row=0;
-			for(int i=0;i<GRID_SIZE;i++) {
+			for(int i=0;i<GRID_SIZE;i++) { // i represents the rows
 				System.out.println("Insert row "+(i+1));
-				for(int j=0;j<GRID_SIZE;j++) {
-					board[row][j]= input.nextInt();
+				for(int j=0;j<GRID_SIZE;j++) { // j represents the columns
+					board[row][j]= input.nextInt(); // we read wach value on the row
 				}
 				row++;
 			}
 			System.out.println( (solveBoard(board)? "The board was solved successfully!":"The board has no solving solution!"));
-			printBoard(board);
+			printBoard(board); // we call the funtion in order to print the board
 		}
-		else System.out.println("Invalid choice!");
+		else System.out.println("Invalid choice!"); // if the user introduces anything but 'd' or 'i' then we will print this
 		input.close();
 	}
 
 	private static void printBoard(int[][] board) {
 		for(int row=0;row<GRID_SIZE;row++) {
-			if(row % 3 == 0 && row != 0)//for every third row
+			if(row % 3 == 0 && row != 0) // for every third row
 				System.out.println("------------");
 			for(int column=0;column<GRID_SIZE;column++) {
-				if(column % 3 == 0 && column != 0)//for every third column
+				if(column % 3 == 0 && column != 0) // for every third column
 					System.out.print("|");
 				System.out.print(board[row][column]);
 			}
