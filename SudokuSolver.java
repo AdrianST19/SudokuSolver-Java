@@ -31,7 +31,7 @@ public class SudokuSolver {
 				for(int j=0;j<GRID_SIZE;j++) 
 					board[i][j]=default_board[i][j];
 			
-			printBoard(board);
+			printBoard(board); 
 			System.out.println("The board was solved succesfully!");
 			solveBoard(board);
 			printBoard(board); // we call the funtion in order to print the board
